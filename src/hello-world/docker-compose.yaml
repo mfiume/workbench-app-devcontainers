@@ -2,14 +2,15 @@ services:
   app:
     # The container name must be "application-server"
     container_name: "application-server"
-    # Build from local Dockerfile
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # Use pre-built Python image
+    image: "python:3.11-slim"
     environment:
       ENVIRONMENT: "Verily Workbench"
-    # Command to run the Flask app
-    command: ["python", "/workspace/app.py"]
+    # Command: install Flask and run the app
+    command: >
+      bash -c "pip install --no-cache-dir flask werkzeug &&
+               cd /workspace &&
+               python app.py"
     restart: always
     volumes:
       - .:/workspace:cached
